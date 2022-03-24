@@ -7,6 +7,7 @@ import com.epam.dao.EmployeeDao;
 import com.epam.dto.Employee;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class EmployeeService {
@@ -16,8 +17,11 @@ public class EmployeeService {
 	
 	
 	public Flux<Employee> loadAllEmployees(){
-		Flux<Employee> employees = dao.getAllEmployees();
-		return employees;
+		return dao.getAllEmployees();
 		
+	}
+	
+	public Mono<Employee> addEmployee(Employee employee){
+		return dao.addEmployee(employee);
 	}
 }
