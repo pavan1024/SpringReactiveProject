@@ -28,18 +28,19 @@ class EmployeeControllerTest {
 	private EmployeeService employeeService;
 
 	@Test
-	public void testCreateEmployee() {
+	void testCreateEmployee() {
 		Employee employee = new Employee(1, "Test", "Tests");
 		Mono<Employee> employeeMono = Mono.just(employee);
 		when(employeeService.addEmployee(employee)).thenReturn(employeeMono);
 		webTestClient.post().uri("/employees").contentType(MediaType.APPLICATION_JSON)
-				.body(Mono.just(employee), Employee.class).exchange().expectStatus().isOk().expectBody();
+				.body(employeeMono, Employee.class).exchange().expectStatus().isOk().expectBody();
 	}
 
 	@Test
-	public void testGetEmployee() {
+	void testGetEmployee() {
 		Employee employee = new Employee(1, "Test", "Tests");
-		Flux<Employee> employeeFlux = Flux.just(employee);
+		Employee employee1 = new Employee(2,"Test1","Tests1");
+		Flux<Employee> employeeFlux = Flux.just(employee,employee1);
 		when(employeeService.loadAllEmployees()).thenReturn(employeeFlux);
 		webTestClient.get().uri("/employees").exchange().expectStatus().isOk().expectBodyList(Employee.class);
 	}
